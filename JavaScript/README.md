@@ -385,7 +385,7 @@ An IIFE is a function in JavaScript that is defined and executed immediately. Th
   ```
 - 🧩 Breaking It Down:
 
-1.                                                                                             (function() { ... }): The function is wrapped in parentheses to treat it as an expression, not a declaration.
+1.                                                                                              (function() { ... }): The function is wrapped in parentheses to treat it as an expression, not a declaration.
 2.  () after the parentheses: This immediately invokes the function.
 
 ![Alt text](image-25.png)
