@@ -286,7 +286,13 @@ Props and State are core concepts in React. They are the only triggers that caus
 
 ## Controlled Elements in React
 
+
 The `<input>, <select>, or <textarea>` maintain their state in the dom by themselves.
+- The value is managed by the DOM, not React.
+
+- React has no idea what the user typed unless you manually query the DOM (like document.querySelector or use a ref).
+
+- This breaks the "React way" of managing everything with state.
 In react we want all state to centralized at one place means inside the react application not in the DOM. To do that we use controlled element
 
 A controlled element is a form element where React fully manages the value via state like `<input>, <select>, or <textarea>`
@@ -331,3 +337,107 @@ For example, this can be useful when:
 ![Alt text](image-68.png)
 
 ---
+
+# Deriving State
+Derived state means a value that is computed based on other state or props, not stored independently.
+
+Instead of storing a duplicate piece of data in useState, you derive it from existing state or props inside the render.
+
+![alt text](image-69.png)
+
+1) Without Derived State (Bad Practice)
+Stores both products and filteredProducts in state — redundant.
+
+```
+import React, { useState } from 'react';
+
+const ProductList = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [products] = useState([
+    { id: 1, name: 'Laptop' },
+    { id: 2, name: 'Smartphone' }
+  ]);
+  const [filteredProducts, setFilteredProducts] = useState(products);
+
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    setFilteredProducts(
+      products.filter(p =>
+        p.name.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  };
+
+  return (
+    <>
+      <input value={searchQuery} onChange={handleSearch} />
+      <ul>
+        {filteredProducts.map(p => <li key={p.id}>{p.name}</li>)}
+      </ul>
+    </>
+  );
+};
+
+export default ProductList;
+```
+
+2) ✅ With Derived State (Good Practice)
+Filters products directly during render — cleaner and simpler.
+
+
+```
+import React, { useState } from 'react';
+
+const ProductList = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const products = [
+    { id: 1, name: 'Laptop' },
+    { id: 2, name: 'Smartphone' }
+  ];
+
+  const filteredProducts = products.filter(p =>
+    p.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <>
+      <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+      <ul>
+        {filteredProducts.map(p => <li key={p.id}>{p.name}</li>)}
+      </ul>
+    </>
+  );
+};
+
+export default ProductList;
+```
+---
+# .sort() method
+To sort elements by name in React, you can use JavaScript's .sort()
+
+![alt text](image-71.png)
+![alt text](image-72.png)
+![alt text](image-74.png)
+![alt text](image-73.png)
+---
+# Window: confirm() method
+window.confirm() instructs the browser to display a dialog with an optional message, and to wait until the user either confirms or cancels the dialog.
+![alt text](image-75.png)
+![alt text](image-76.png)
+
+---
+# CHILDREN PROPS
+
+The children prop is a special prop automatically provided by React. It allows you to pass content between a component’s opening and closing tags, instead of passing it as a regular prop.
+
+In React, children is a special prop that automatically passes any JSX elements or components nested within a component's opening and closing tags. It provides a way for components to render dynamic content passed down from their parent components.
+
+![alt text](image-77.png)
+
+---
+
+# THINKING IN REACT: COMPONENTS COMPOSITION, AND REUSABILITY
+![alt text](image-78.png)
+![alt text](image-79.png)
+![alt text](image-80.png)
