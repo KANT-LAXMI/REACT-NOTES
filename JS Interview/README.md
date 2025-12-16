@@ -266,6 +266,181 @@ In a JIT compiler, we have a component called a **monitor** (or **profiler**) th
 
 ![alt text](image-7.png)
 
+# JavaScript JIT Compilation Flow (V8 Engine)
+
+This document explains how JavaScript code is executed internally using a **Parser + Interpreter + JIT Compiler** model, as implemented in engines like **V8**.
+
+---
+
+## 1️⃣ Source Code → Parser → AST
+
+### Source Code
+
+```javascript
+function add(a, b) {
+  return a + b;
+}
+```
+
+- This is the JavaScript code written by the developer.
+
+### Parser
+
+- Reads the source code.
+- Performs **syntax validation**.
+- Converts the code into an **Abstract Syntax Tree (AST)**.
+
+### Abstract Syntax Tree (AST)
+
+- A tree-based structural representation of the code.
+- Functions, variables, loops, and operators become nodes.
+- **Not executable** by itself.
+
+📌 **Why AST?**  
+AST allows the JavaScript engine to understand, analyze, and optimize code structurally before execution.
+
+---
+
+## 2️⃣ Monitor (Profiler)
+
+After the AST is created, execution begins under continuous monitoring.
+
+### Monitor (a.k.a Profiler)
+
+- Observes runtime behavior of the code.
+- Tracks:
+
+  - Frequently called functions
+  - Repeating loops
+  - Execution patterns
+
+- Classifies code as:
+  - ❄️ **Cold** – rarely executed or only once
+    - Initialization code
+    - One-time setup logic
+  - 🌤 **Warm** – executed multiple times
+    - Functions triggered occasionally
+    - Loops that run a moderate number of times
+  - 🔥 **Hot** – executed very frequently
+    - Tight loops
+    - Frequently called functions
+    - Core business logic
+
+📌 **Hot code** usually includes loops and frequently invoked functions.
+
+> **JavaScript engines** classify code as `cold`, `warm`, or `hot` based on execution frequency, and only hot code is JIT-compiled to machine code for maximum performance.
+
+## 3️⃣ Decision: Hot or Warm Code?
+
+At runtime, the engine decides:
+
+- ❌ **Not hot/warm**  
+  → Sent to the **Interpreter**
+
+- ✅ **Hot or warm**  
+  → Sent to the **Compiler**
+
+This decision point is critical to performance.
+
+---
+
+## 4️⃣ Interpreter (Ignition in V8)
+
+### Interpreter
+
+- Executes code **line by line**.
+- Very fast startup.
+- No heavy optimizations.
+
+Used for:
+
+- Cold code
+- One-time execution paths
+
+📌 This is why JavaScript applications **start quickly**.
+
+---
+
+## 5️⃣ Compiler (TurboFan in V8)
+
+When code becomes hot or warm:
+
+### Compiler
+
+- Converts frequently executed code into **machine code**.
+- Happens **at runtime** → this is **Just-In-Time (JIT)** compilation.
+- Generates highly optimized native code.
+
+📌 **Key Insight**  
+Even if a loop runs thousands of times, **no re-translation is required**:
+
+- The hot loop is compiled **once**
+- The optimized machine code is reused
+
+---
+
+## 6️⃣ Optimization Phase
+
+After compilation, further optimizations are applied:
+
+### Optimization
+
+- Removes unnecessary checks
+- Inlines functions
+- Optimizes based on:
+  - Data types
+  - Execution patterns
+
+📌 This is why JavaScript can achieve performance close to compiled languages in hot paths.
+
+---
+
+## 7️⃣ Store + Hot Swapping
+
+### Store
+
+- Optimized machine code is stored for reuse.
+
+### Hot Swapping
+
+- The engine replaces the interpreted version with the optimized version.
+- Happens **without stopping execution**.
+
+📌 This seamless replacement is why it’s called **Just-In-Time** compilation.
+
+---
+
+## 8️⃣ Output
+
+- Final output is produced.
+- Execution continues using:
+  - Interpreter for cold code
+  - Optimized machine code for hot code
+
+---
+
+## 🔁 Big Picture Summary
+
+JavaScript execution uses **all three stages** together:
+
+| Stage        | Role                       |
+| ------------ | -------------------------- |
+| Parser       | Converts source code → AST |
+| Interpreter  | Fast startup execution     |
+| JIT Compiler | Optimizes hot code         |
+
+---
+
+### ✅ Final Takeaway
+
+JavaScript is:
+
+- **Synchronous**
+- **Single-threaded**
+- **Interpreted + Compiled (JIT)**
+
+This hybrid approach gives JavaScript both **fast startup** and **high performance**.
+
 1. **Identifies hot or warm parts of the code**  
    (e.g., repetitive or frequently executed sections).
 
