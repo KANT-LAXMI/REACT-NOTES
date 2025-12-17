@@ -266,7 +266,7 @@ In a JIT compiler, we have a component called a **monitor** (or **profiler**) th
 
 ![alt text](image-7.png)
 
-# JavaScript JIT Compilation Flow (V8 Engine)
+## JavaScript JIT Compilation Flow (V8 Engine)
 
 This document explains how JavaScript code is executed internally using a **Parser + Interpreter + JIT Compiler** model, as implemented in engines like **V8**.
 
@@ -775,7 +775,7 @@ Both **function scope** and **block scope** are types of local scope.
 
 ---
 
-# 7) `this`
+# 9) `this`
 
 - In JavaScript, this refers to the object that is currently executing the function.
 - Its value is determined at runtime, based on how a function is called, not where it’s writ
@@ -807,443 +807,6 @@ Both **function scope** and **block scope** are types of local scope.
   ![alt text](image-51.png)
 
   ![alt text](image-52.png)
-
----
-
-# 8) Lexical scope
-
-When you define a variable or function inside a block or function, they are accessible within that block or function and any nested blocks or functions within it.
-Lexical scope is closely related to closures. If a function returns another function the nested function can access the variables arguments of the lexically scoped parent functions.
-![alt text](image-22.png)
-![alt text](image-23.png)
-
----
-
-# 9) Shadowing
-
-## ![alt text](image-24.png)
-
-# 10) Temporal Dead Zone (TDZ)
-
-The **Temporal Dead Zone (TDZ)** is a behavior in JavaScript that occurs when declaring variables using **let** and **const**.  
-It refers to the period between **entering the scope** and the **actual declaration** of the variable.  
-During this period, the variable **cannot be accessed** and will throw a **ReferenceError** if used.
-
-### Examples
-
-```javascript
-console.log(myVar); // undefined
-var myVar = 5;
-console.log(myVar); // 5
-
-console.log(myLet); // ReferenceError: Cannot access 'myLet' before initialization
-let myLet = 10;
-console.log(myLet); // 10
-
-console.log(myConst); // ReferenceError: Cannot access 'myConst' before initialization
-const myConst = 15;
-console.log(myConst); // 15
-```
-
-# ---------------------------------------
-
-# 🚀 SECTION 2: VARIABLES & DATA TYPES
-
-# ---------------------------------------
-
-# 11) Primitive vs Reference Types (Deep Explanation)
-
-## JavaScript has **7 primitive types**:
-
-| Primitive     | Notes                              |
-| ------------- | ---------------------------------- |
-| **number**    | floating point, IEEE-754 quirks    |
-| **string**    | immutable                          |
-| **boolean**   | true/false                         |
-| **undefined** | variable declared but not assigned |
-| **null**      | intentional empty value            |
-| **symbol**    | unique values                      |
-| **bigint**    | large integers                     |
-
----
-
-## ✅ Important Characteristics of Primitives
-
-- Stored directly in the **stack** (conceptual model)
-- **Immutable** (operations create new values, not modify existing ones)
-- Compared **by value**
-
----
-
-## 📌 Reference Types
-
-- objects
-- arrays
-- functions
-
-### Characteristics:
-
-- Stored in the **heap** (dynamic memory)
-- Variables hold a **reference/pointer** to the memory location
-- Compared **by reference**, not by value
-
-### Example:
-
-```javascript
-const a = { x: 1 };
-const b = { x: 1 };
-
-console.log(a === b); // false (different references)
-```
-
-# 12) Coercion in JavaScript
-
-Coercion is the **automatic type conversion** that occurs in JavaScript when performing operations involving values of different types.  
-Type conversion means transforming a value from one type to another (e.g., number → string).
-
-JavaScript supports two kinds of type conversion:
-
-- **Implicit Type Conversion (Coercion)** → done automatically by JavaScript.
-- **Explicit Type Conversion (Type Casting)** → done manually by the developer.
-
----
-
-## What is Implicit Type Conversion (Coercion)?
-
-JavaScript is a **weakly typed language**, meaning it allows operations between different types.  
-When such operations occur, JavaScript attempts to **coerce one value's type** so the operation can still proceed.
-
-### Example 1: Number + String
-
-```javascript
-const sum = 35 + "hello";
-
-console.log(sum); // "35hello"
-console.log(typeof sum); // string
-```
-
-Well here, Instead of JavaScript throwing an error, it coerces the type of one value to fit the type of the other value so that the operation can be carried out.
-
-In this case, using the + sign with a number and a string, the number is coerced to a string, then the + sign is used for a concatenation operation.
-
-```javascript
-const times = 35 * "hello";
-
-console.log(times);
-// NaN
-```
-
-Here, we use times \* for a number and a string. There's no operation with strings that involves multiplication, so here, the ideal coercion is from string to number (as numbers have compatible operations with multiplication).
-
-But since a string (in this case, "hello") is converted to a number (which is NaN) and that number is multiplied by 35, the final result is NaN.
-
-## What is Explicit Type Conversion (Type Casting)?
-
-Explicit type conversion (also known as **type casting**) is when **you**, the developer, intentionally convert a value from one type to another.  
-This is often done to ensure an operation behaves as expected.
-
-To perform explicit conversions, JavaScript provides **type constructors** such as:
-
-- `String()`
-- `Number()`
-- `Boolean()`
-- `BigInt()`
-- `Object()`
-
-### Example: Converting a Number to a String
-
-```javascript
-const number = 30;
-
-const numberConvert = String(number);
-
-console.log(numberConvert);
-// "30"
-
-console.log(typeof numberConvert);
-// string
-```
-
----
-
-# 13) == vs === in JavaScript
-
-In JavaScript, the main difference between `==` and `===` is:
-
-- `==` performs **type coercion** before comparison.
-- `===` compares both **value and type** without coercion.
-
----
-
-## == (Loose Equality)
-
-The **loose equality** operator attempts to convert both values to a common type before comparing them.
-
-### Characteristics:
-
-- **Type Coercion:** Yes (automatic)
-- Can produce surprising or unpredictable results.
-
-### Examples:
-
-```javascript
-5 == "5"; // true  → "5" converted to 5
-true == 1; // true  → true converted to 1
-null == undefined; // true
-0 == false; // true  → false converted to 0
-```
-
-## === (Strict Equality)
-
-The strict equality operator does not perform type conversion.
-
-### Characteristics:
-
-- **Type Coercion:** No
-- Compares both value and type
-
-### Examples:
-
-```javascript
-5 === "5"; // false → number vs string
-true === 1; // false
-null === undefined; // false
-0 === false; // false
-```
-
-![alt text](image-25.png)
-
-# 14) null, undefined, NaN, Infinity
-
-## undefined
-
-Variable is declared but not assigned
-
-- Default function parameter value
-
-- Missing object property
-
-- Missing array element
-
-```javascript
-let a;
-console.log(a); // undefined
-```
-
-## null
-
-null is a primitive value that represents an intentional absence of any object value or an empty value. Programmers explicitly assign null to a variable to indicate that the variable has no value.
-
-```javascript
-let user = null;
-
-typeof null → "object"   (historic bug)
-typeof undefined → "undefined"
-```
-
-## NaN
-
-Meaning: Invalid Number
-
-NaN stands for "Not a Number". It is a special numeric value that represents the result of an invalid or mathematically undefined operation that was intended to produce a number.
-
-```javascript
-Number("abc") → NaN
-0 / 0 → NaN
-```
-
-## Infinity 
-
-Infinity is a special numeric value representing a number that is greater than the maximum possible number that the programming environment can handle. It is the mathematical concept of infinity, \(\infty \).
-
-# 15) Pass-by-value vs Pass-by-reference
-
-✔ JavaScript always passes values, not references
-
-When passing objects → the value is a reference pointer.
-
-### Pass by value
-
-Pass by value means when a variable is assigned to another variable, the value stored in the variable is copied into the new variable. They are independent of each other, each occupying its own memory space.
-
-```javascript
-let a = 10;
-let b = a;
-
-a = 20;
-
-console.log(a); // Outputs: 20
-console.log(b); // Outputs: 10
-
-///////////////////////////////////////////////////////
-
-let num = 10;
-
-function modifyValue(value) {
-  value = 20; // Modifies the local copy
-}
-
-modifyValue(num);
-console.log(num); // Output: 10 (original value is preserved)
-```
-
-In this example, we first declare a variable a and set it equal to 10. We then declare another variable b and set it equal to a. At this point, both a and b are 10. However, when we change the value of a to 20, b remains 10 because the value was passed by value - meaning the value 10 was copied to b when it was declared, and changes to a do not affect b
-
-### Pass by Reference
-
-While JavaScript is primarily a “pass by value” language, it uses a concept called “pass by reference” when dealing with objects (including arrays and functions).
-
-When an object is created in JavaScript, it is stored in a memory space, and the variable associated with it stores the memory address or reference where the object is stored.
-
-If you assign this object variable to another variable, it does not copy the object. Instead, it copies the reference to the object. Both variables now point to the same memory space, which means changes through one variable are reflected when accessing the object through the other variable.
-
-```javascript
-let obj1 = { value: 10 };
-let obj2 = obj1;
-
-obj1.value = 20;
-
-console.log(obj1.value); // Outputs: 20
-console.log(obj2.value); // Outputs: 20
-
-///////////////////////////////////////////////////////
-let myObj = { value: 10 };
-
-function modifyObject(obj) {
-  obj.value = 20; // Mutates the original object
-}
-
-modifyObject(myObj);
-console.log(myObj.value); // Output: 20 (original object is modified)
-```
-
-In this example, obj1 and obj2 are both references to the same object. When we change obj1.value to 20, the change is reflected in obj2.value because both obj1 and obj2 point to the same memory space - the object { value: 20 }.
-
-# 16) Boxing / Autoboxing
-
-In JavaScript, autoboxing is the automatic conversion of a primitive value (like a string, number, or boolean) into a temporary "wrapper" object when you try to access a property or method on it. Unboxing is the reverse process, where a wrapper object is converted back into its primitive value when a primitive is expected
-
-## Boxing in JavaScript
-
-## Boxing (Auto-Boxing) in JavaScript
-
-In JavaScript, **primitive data types** (like string, number, boolean) are **not objects**, so technically they **should not** have methods or properties.
-
-But they _do_.  
-For example:
-
-```javascript
-var car = "ford";
-
-console.log(car); // "ford"
-console.log(car.length); // 4
-```
-
-## Autoboxing in JavaScript
-
-JavaScript primitives (string, number, boolean, null, undefined, symbol) do not inherently have methods or properties. However, JavaScript's autoboxing feature allows them to behave as if they do
-
-How it works:
-
-- When you try to use a property or method on a primitive value, the JavaScript engine automatically:
-- Creates a temporary instance of the corresponding built-in wrapper object (String, Number, or Boolean).
-- The method is called on this temporary object.
-  The result is returned, and the temporary object is immediately discarded (garbage collected).
-
-```javascript
-const name = "John"; // Primitive string
-console.log(name.length); // Autoboxing happens here
-console.log(name.toUpperCase()); // Autoboxing happens here
-```
-
-Behind the scenes, when name.toUpperCase() is called, JavaScript temporarily treats "John" as new String("John") to access the toUpperCase() method.
-
-## Unboxing in JavaScript
-
-Unboxing is the process of converting an object wrapper back to its basic, primitive value. This happens automatically (implicitly) when JavaScript needs a primitive value for an operation, such as in arithmetic operations, comparisons, or type coercion
-How it works:
-
-- JavaScript engine calls the internal ToPrimitive() abstract operation, which often uses the object's valueOf() or toString() methods to retrieve the underlying primitive value.
-
-```javascript
-const numObj = new Number(5); // A Number object, not a primitive
-const sum = numObj + 10; // Unboxing happens here
-console.log(sum); // Output: 15
-```
-
-# 17) Pure vs Impure
-
-The primary difference is that a pure function always produces the same output for the same input and has no side effects, whereas an impure function may produce different results or modify external state.
-
-## Pure Functions
-
-Pure functions are a core concept in functional programming, known for their predictability and reliability.
-
-- **Predictable Output**: Given the exact same inputs (arguments), a pure function will always return the exact same result, every time.
-- **No Side Effects :** They do not modify anything outside their own scope. This means no changing global variables, no DOM manipulation, no console logging, and no making API calls. -**Benefits:** They are easy to test, debug, and reason about. They also enable performance optimizations like memoization (caching results).
-  Example:
-
-```javascript
-// A pure function
-function add(a, b) {
-  return a + b;
-}
-
-console.log(add(2, 3)); // Always outputs 5
-```
-
-## Impure Functions
-
-Impure functions have the opposite characteristics, allowing for interaction with the outside world, which is necessary for most real-world applications.
-
-- **Unpredictable Output:** The output may change even with the same input arguments, because it might depend on external factors like the current time or a random number.
-- **Side Effects:** They interact with or modify the external environment.
-- **Use Cases:** Necessary for operations like making network requests (fetch), working with the browser's APIs (e.g., window or document), and modifying application state.
-
-```javascript
-// Impure function due to using an external variable
-let total = 0;
-function addToTotal(value) {
-  total += value; // Mutates an external variable (side effect)
-  return total;
-}
-
-console.log(addToTotal(5)); // First call outputs 5
-console.log(addToTotal(5)); // Second call outputs 10 (different output for the same input)
-
-// Impure function due to an unpredictable source
-function getRandomNumber() {
-  return Math.random(); // Uses an external, unpredictable source
-}
-
-console.log(getRandomNumber()); // Different output every time
-```
-
-![alt text](image-26.png)
-
-# 18) Context Binding
-
-Context binding in JavaScript refers to the process of setting the value of the this keyword within a function's execution to a specific object. This is crucial because the value of this is dynamic and typically depends on how or where a function is called, not where it is defined.
-
-There are four primary ways this is bound in JavaScript:
-
-1. **Default (Window/Global) Binding:** When a function is called as a standalone function without any other binding rules applied, this refers to the global object (e.g., window in a browser). In strict mode, this will be undefined instead.
-2. **Implicit Binding:** When a function is invoked as a method of an object (using dot notation), this implicitly binds to the object immediately to the left of the dot at the call site.
-3. **Explicit Binding:** You can explicitly force a function to use a specific object as its context using the call(), apply(), and bind() methods.
-4. **new Binding:** When a function is used as a constructor with the new keyword, JavaScript creates a new object and binds this to that newly created instance.
-
-![alt text](image-28.png)
-![alt text](image-29.png)
-![alt text](image-30.png)
-![alt text](image-31.png)
-![alt text](image-27.png)
-
-# 19) This
-
-this is a runtime binding created when a function is invoked.
-
-❗ this is NOT determined by where the function is defined,
-it is determined by how the function is called.
 
 JavaScript determines the value of `this` using **four binding rules**, evaluated in the following **priority order**:
 
@@ -1344,7 +907,469 @@ What new does internally:
 
 - Returns object
 
-# 20) Object in JS
+---
+
+# 10) Context Binding
+
+`👉 this and “context binding” are related, but they are NOT the same thing.`
+
+Context binding means explicitly setting what this should be for a function.
+
+There are four primary ways this is bound in JavaScript:
+
+1. **Default (Window/Global) Binding:** When a function is called as a standalone function without any other binding rules applied, this refers to the global object (e.g., window in a browser). In strict mode, this will be undefined instead.
+2. **Implicit Binding:** When a function is invoked as a method of an object (using dot notation), this implicitly binds to the object immediately to the left of the dot at the call site.
+3. **Explicit Binding:** You can explicitly force a function to use a specific object as its context using the call(), apply(), and bind() methods.
+4. **new Binding:** When a function is used as a constructor with the new keyword, JavaScript creates a new object and binds this to that newly created instance.
+
+![alt text](image-28.png)
+![alt text](image-29.png)
+![alt text](image-30.png)
+![alt text](image-31.png)
+![alt text](image-27.png)
+
+# 11) Lexical scope
+
+When you define a variable or function inside a block or function, they are accessible within that block or function and any nested blocks or functions within it.
+Lexical scope is closely related to closures. If a function returns another function the nested function can access the variables arguments of the lexically scoped parent functions.
+![alt text](image-22.png)
+![alt text](image-23.png)
+
+---
+
+# 12) Shadowing
+
+## ![alt text](image-24.png)
+
+# 13) Temporal Dead Zone (TDZ)
+
+The **Temporal Dead Zone (TDZ)** is a behavior in JavaScript that occurs when declaring variables using **let** and **const**.  
+It refers to the period between **entering the scope** and the **actual declaration** of the variable.  
+During this period, the variable **cannot be accessed** and will throw a **ReferenceError** if used.
+
+### Examples
+
+```javascript
+console.log(myVar); // undefined
+var myVar = 5;
+console.log(myVar); // 5
+
+console.log(myLet); // ReferenceError: Cannot access 'myLet' before initialization
+let myLet = 10;
+console.log(myLet); // 10
+
+console.log(myConst); // ReferenceError: Cannot access 'myConst' before initialization
+const myConst = 15;
+console.log(myConst); // 15
+```
+
+# ---------------------------------------
+
+# 🚀 SECTION 2: VARIABLES & DATA TYPES
+
+# ---------------------------------------
+
+# 14) Primitive vs Reference Types (Deep Explanation)
+
+## JavaScript has **7 primitive types**:
+
+| Primitive     | Notes                              |
+| ------------- | ---------------------------------- |
+| **number**    | floating point, IEEE-754 quirks    |
+| **string**    | immutable                          |
+| **boolean**   | true/false                         |
+| **undefined** | variable declared but not assigned |
+| **null**      | intentional empty value            |
+| **symbol**    | unique values                      |
+| **bigint**    | large integers                     |
+
+---
+
+## ✅ Important Characteristics of Primitives
+
+- Stored directly in the **stack** (conceptual model)
+- **Immutable** (operations create new values, not modify existing ones)
+- Compared **by value**
+
+---
+
+## 📌 Reference Types
+
+- objects
+- arrays
+- functions
+
+### Characteristics:
+
+- Stored in the **heap** (dynamic memory)
+- Variables hold a **reference/pointer** to the memory location
+- Compared **by reference**, not by value
+
+### Example:
+
+```javascript
+const a = { x: 1 };
+const b = { x: 1 };
+
+console.log(a === b); // false (different references)
+```
+
+# 15) Coercion in JavaScript
+
+Coercion is the **automatic type conversion** that occurs in JavaScript when performing operations involving values of different types.  
+Type conversion means transforming a value from one type to another (e.g., number → string).
+
+JavaScript supports two kinds of type conversion:
+
+- **Implicit Type Conversion (Coercion)** → done automatically by JavaScript.
+- **Explicit Type Conversion (Type Casting)** → done manually by the developer.
+
+---
+
+## What is Implicit Type Conversion (Coercion)?
+
+JavaScript is a **weakly typed language**, meaning it allows operations between different types.  
+When such operations occur, JavaScript attempts to **coerce one value's type** so the operation can still proceed.
+
+### Example 1: Number + String
+
+```javascript
+const sum = 35 + "hello";
+
+console.log(sum); // "35hello"
+console.log(typeof sum); // string
+```
+
+Well here, Instead of JavaScript throwing an error, it coerces the type of one value to fit the type of the other value so that the operation can be carried out.
+
+In this case, using the + sign with a number and a string, the number is coerced to a string, then the + sign is used for a concatenation operation.
+
+```javascript
+const times = 35 * "hello";
+
+console.log(times);
+// NaN
+```
+
+Here, we use times \* for a number and a string. There's no operation with strings that involves multiplication, so here, the ideal coercion is from string to number (as numbers have compatible operations with multiplication).
+
+But since a string (in this case, "hello") is converted to a number (which is NaN) and that number is multiplied by 35, the final result is NaN.
+
+## What is Explicit Type Conversion (Type Casting)?
+
+Explicit type conversion (also known as **type casting**) is when **you**, the developer, intentionally convert a value from one type to another.  
+This is often done to ensure an operation behaves as expected.
+
+To perform explicit conversions, JavaScript provides **type constructors** such as:
+
+- `String()`
+- `Number()`
+- `Boolean()`
+- `BigInt()`
+- `Object()`
+
+### Example: Converting a Number to a String
+
+```javascript
+const number = 30;
+
+const numberConvert = String(number);
+
+console.log(numberConvert);
+// "30"
+
+console.log(typeof numberConvert);
+// string
+```
+
+---
+
+# 16) == vs === in JavaScript
+
+In JavaScript, the main difference between `==` and `===` is:
+
+- `==` performs **type coercion** before comparison.
+- `===` compares both **value and type** without coercion.
+
+---
+
+## == (Loose Equality)
+
+The **loose equality** operator attempts to convert both values to a common type before comparing them.
+
+### Characteristics:
+
+- **Type Coercion:** Yes (automatic)
+- Can produce surprising or unpredictable results.
+
+### Examples:
+
+```javascript
+5 == "5"; // true  → "5" converted to 5
+true == 1; // true  → true converted to 1
+null == undefined; // true
+0 == false; // true  → false converted to 0
+```
+
+## === (Strict Equality)
+
+The strict equality operator does not perform type conversion.
+
+### Characteristics:
+
+- **Type Coercion:** No
+- Compares both value and type
+
+### Examples:
+
+```javascript
+5 === "5"; // false → number vs string
+true === 1; // false
+null === undefined; // false
+0 === false; // false
+```
+
+![alt text](image-25.png)
+
+# 17) null, undefined, NaN, Infinity
+
+## undefined
+
+- `Variable is declared but not assigned`
+
+  ```javascript
+  let a;
+  console.log(a); // undefined
+  ```
+
+- Default function parameter value
+
+  ```javascript
+  function greet(name) {
+    console.log(name);
+  }
+  greet(); // undefined
+
+  // with default value
+
+  function greet(name = "Guest") {
+    console.log(name);
+  }
+  greet(); // Guest
+  ```
+
+- Missing object property
+
+  ```javascript
+  const user = {
+    name: "Alex",
+  };
+
+  console.log(user.age); // undefined
+  ```
+
+- Missing array element
+
+  ```javascript
+  const arr = [1, 2, , 4];
+
+  console.log(arr[2]); // undefined
+  ```
+
+## null
+
+null is a primitive value that represents an intentional absence of any object value or an empty value. Programmers explicitly assign null to a variable to indicate that the variable has no value.
+
+```javascript
+let user = null;
+
+typeof null → "object"   (historic bug)
+typeof undefined → "undefined"
+```
+
+## NaN
+
+`Meaning: Invalid Number`
+
+NaN stands for "Not a Number". It is a special numeric value that represents the result of an invalid or mathematically undefined operation that was intended to produce a number.
+
+```javascript
+Number("abc") → NaN
+0 / 0 → NaN
+```
+
+## Infinity 
+
+Infinity is a special numeric value representing a number that is greater than the maximum possible number that the programming environment can handle. It is the mathematical concept of infinity.
+
+# 18) Pass-by-value vs Pass-by-reference
+
+![alt text](image-54.png)
+
+`✔ JavaScript always passes values, not references`
+
+`When passing objects → the value is a reference pointer.`
+
+### Pass by value
+
+Pass by value means when a variable is assigned to another variable, the value stored in the variable is copied into the new variable. They are independent of each other, each occupying its own memory space.
+
+```javascript
+let a = 10;
+let b = a;
+
+a = 20;
+
+console.log(a); // Outputs: 20
+console.log(b); // Outputs: 10
+
+///////////////////////////////////////////////////////
+
+let num = 10;
+
+function modifyValue(value) {
+  value = 20; // Modifies the local copy
+}
+
+modifyValue(num);
+console.log(num); // Output: 10 (original value is preserved)
+```
+
+In this example, we first declare a variable a and set it equal to 10. We then declare another variable b and set it equal to a. At this point, both a and b are 10. However, when we change the value of a to 20, b remains 10 because the value was passed by value - meaning the value 10 was copied to b when it was declared, and changes to a do not affect b.
+
+### Pass by Reference
+
+While JavaScript is primarily a “pass by value” language, it uses a concept called “pass by reference” when dealing with objects (including arrays and functions).
+
+When an object is created in JavaScript, it is stored in a memory space, and the variable associated with it stores the memory address or reference where the object is stored.
+
+If you assign this object variable to another variable, it does not copy the object. Instead, it copies the reference to the object. Both variables now point to the same memory space, which means changes through one variable are reflected when accessing the object through the other variable.
+
+```javascript
+let obj1 = { value: 10 };
+let obj2 = obj1;
+
+obj1.value = 20;
+
+console.log(obj1.value); // Outputs: 20
+console.log(obj2.value); // Outputs: 20
+
+///////////////////////////////////////////////////////
+let myObj = { value: 10 };
+
+function modifyObject(obj) {
+  obj.value = 20; // Mutates the original object
+}
+
+modifyObject(myObj);
+console.log(myObj.value); // Output: 20 (original object is modified)
+```
+
+In this example, obj1 and obj2 are both references to the same object. When we change obj1.value to 20, the change is reflected in obj2.value because both obj1 and obj2 point to the same memory space - the object { value: 20 }.
+
+# 19) Boxing / Autoboxing
+
+In JavaScript, autoboxing is the automatic conversion of a primitive value (like a string, number, or boolean) into a temporary "wrapper" object when you try to access a property or method on it. Unboxing is the reverse process, where a wrapper object is converted back into its primitive value when a primitive is expected
+
+## Boxing (Auto-Boxing) in JavaScript
+
+In JavaScript, **primitive data types** (like string, number, boolean) are **not objects**, so technically they **should not** have methods or properties.
+
+But they _do_.  
+For example:
+
+```javascript
+var car = "ford";
+
+console.log(car); // "ford"
+console.log(car.length); // 4
+```
+
+## Autoboxing in JavaScript
+
+JavaScript primitives (string, number, boolean, null, undefined, symbol) do not inherently have methods or properties. However, JavaScript's autoboxing feature allows them to behave as if they do
+
+How it works:
+
+- When you try to use a property or method on a primitive value, the JavaScript engine automatically:
+- Creates a temporary instance of the corresponding built-in wrapper object (String, Number, or Boolean).
+- The method is called on this temporary object.
+  The result is returned, and the temporary object is immediately discarded (garbage collected).
+
+```javascript
+const name = "John"; // Primitive string
+console.log(name.length); // Autoboxing happens here
+console.log(name.toUpperCase()); // Autoboxing happens here
+```
+
+Behind the scenes, when name.toUpperCase() is called, JavaScript temporarily treats "John" as new String("John") to access the toUpperCase() method.
+
+## Unboxing in JavaScript
+
+Unboxing is the process of converting an object wrapper back to its basic, primitive value. This happens automatically (implicitly) when JavaScript needs a primitive value for an operation, such as in arithmetic operations, comparisons, or type coercion
+How it works:
+
+- JavaScript engine calls the internal ToPrimitive() abstract operation, which often uses the object's valueOf() or toString() methods to retrieve the underlying primitive value.
+
+```javascript
+const numObj = new Number(5); // A Number object, not a primitive
+const sum = numObj + 10; // Unboxing happens here
+console.log(sum); // Output: 15
+```
+
+# 20) Pure vs Impure
+
+The primary difference is that a pure function always produces the same output for the same input and has no side effects, whereas an impure function may produce different results or modify external state.
+
+## Pure Functions
+
+Pure functions are a core concept in functional programming, known for their predictability and reliability.
+
+- **Predictable Output**: Given the exact same inputs (arguments), a pure function will always return the exact same result, every time.
+- **No Side Effects :** They do not modify anything outside their own scope. This means no changing global variables, no DOM manipulation, no console logging, and no making API calls.
+- **Benefits:** They are easy to test, debug. They also enable performance optimizations like memoization (caching results).
+
+Example:
+
+```javascript
+// A pure function
+function add(a, b) {
+  return a + b;
+}
+
+console.log(add(2, 3)); // Always outputs 5
+```
+
+## Impure Functions
+
+Impure functions have the opposite characteristics, allowing for interaction with the outside world, which is necessary for most real-world applications.
+
+- **Unpredictable Output:** The output may change even with the same input arguments, because it might depend on external factors like the current time or a random number.
+- **Side Effects:** They interact with or modify the external environment.
+- **Use Cases:** Necessary for operations like making network requests (fetch), working with the browser's APIs (e.g., window or document), and modifying application state.
+
+```javascript
+// Impure function due to using an external variable
+let total = 0;
+function addToTotal(value) {
+  total += value; // Mutates an external variable (side effect)
+  return total;
+}
+
+console.log(addToTotal(5)); // First call outputs 5
+console.log(addToTotal(5)); // Second call outputs 10 (different output for the same input)
+
+// Impure function due to an unpredictable source
+function getRandomNumber() {
+  return Math.random(); // Uses an external, unpredictable source
+}
+
+console.log(getRandomNumber()); // Different output every time
+```
+
+![alt text](image-26.png)
+
+# 21) Object in JS
 
 Everything in JS (except primitives) is an object.
 An object consists of:
@@ -1390,7 +1415,7 @@ dog → animal → Object.prototype → null
 
 ```
 
-# 21) `__proto__` vs prototype
+# 22) `__proto__` vs prototype
 
 ## `__proto__`
 
@@ -1458,7 +1483,7 @@ JavaScript finds sayHi via p.__proto__, which points to Person.prototype.
 
 ---
 
-# 22) Constructor Functions
+# 23) Constructor Functions
 
 ---
 
@@ -1489,7 +1514,7 @@ When `new Person("Alice")` is executed:
 3. The new object’s `__proto__` is set to `Person.prototype`.
 4. The object is returned automatically.
 
-# 23) ES6 Classes
+# 24) ES6 Classes
 
 ---
 
@@ -1530,7 +1555,7 @@ class Employee extends Person {
 
 - Employee.prototype inherits from Person.prototype.
 
-# 24) Sparse array
+# 25) Sparse array
 
 In JavaScript, a sparse array is an array that has `holes` meaning some indices do not have any elements defined.
 
@@ -1562,7 +1587,7 @@ arr[10] = 100; // Creates holes from index 2 to 9
 console.log(arr.length); // Output: 11
 ```
 
-# 25) Array Methods: `some`, `every`, `find`, `flat`
+# 26) Array Methods: `some`, `every`, `find`, `flat`
 
 ---
 
@@ -1649,7 +1674,7 @@ console.log(sparseArr.flat());
 // Output: [1, 3, 5]
 ```
 
-# 26) Promise APIs
+# 27) Promise APIs
 
 ## Summary Table
 
@@ -1802,7 +1827,7 @@ const fast = new Promise((res) => setTimeout(() => res("fast"), 100));
 Promise.race([slow, fast]).then(console.log); // "fast"
 ```
 
-# 27) Function Composition
+# 28) Function Composition
 
 Combining multiple functions so the output of one becomes the input of the next.
 
@@ -1839,7 +1864,7 @@ const process = compose(reduceFn, filterFn, mapFn);
 | **State** | Uses immutable data and pure functions | Operates on and may modify mutable object state |
 | **Output** | Creates a new function | Operates on the initial object instance |
 
-# 28) DOM Tree (Document Object Model)
+# 29) DOM Tree (Document Object Model)
 
 ---
 
@@ -3027,3 +3052,82 @@ const nestedArray = [1, [2, [3, 4]], 5];
 const result = flattenArray(nestedArray);
 console.log(result); // [1, 2, 3, 4, 5]
 ```
+
+# 40) Truthy and Falsy in JavaScript
+
+In JavaScript, **truthy** and **falsy** describe how values behave when evaluated in a **boolean context**  
+(such as `if`, `while`, `&&`, `||`, `!`).
+
+---
+
+## 🔴 Falsy Values (ONLY these 8)
+
+These values are treated as **false**:
+
+```js
+false;
+0 - 0;
+0n; // BigInt zero
+(""); // empty string
+null;
+undefined;
+NaN;
+```
+
+```js
+if (0) {
+  console.log("runs");
+} else {
+  console.log("does not run"); // ✅
+}
+```
+
+## 🟢 Truthy Values
+
+👉 `Everything else is truthy.`
+
+```js
+true
+1
+-1
+"0"
+"false"
+" "        // string with space
+[]
+{}
+function() {}
+```
+
+```js
+if ([]) {
+  console.log("array is truthy"); // ✅
+}
+```
+
+![alt text](image-59.png)
+
+![alt text](image-60.png)
+
+![alt text](image-61.png)
+
+![alt text](image-69.png)
+
+### Examples
+
+![alt text](image-62.png)
+![alt text](image-63.png)
+![alt text](image-64.png)
+![alt text](image-65.png)
+
+![alt text](image-66.png)
+
+![alt text](image-67.png)
+
+![alt text](image-68.png)
+
+# 41) var vs let in loop
+
+![alt text](image-55.png)
+![alt text](image-56.png)
+![alt text](image-57.png)
+![alt text](image-58.png)
