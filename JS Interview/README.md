@@ -775,21 +775,32 @@ Both **function scope** and **block scope** are types of local scope.
 
 ---
 
-# 7) Context (“this”)
+# 7) `this`
 
-- “this” can be remembered as: **"Under which object was I declared?"**
+- In JavaScript, this refers to the object that is currently executing the function.
+- Its value is determined at runtime, based on how a function is called, not where it’s writ
 - If not declared under any object, the default context is the **global window object**.
-- The place where something is declared determines its `this` value.
 - To change the value of `this`, you can use **bind**, **call**, or **apply** to bind another object.
 
-Certain scenarios where this will refer to a particular context:
+### Certain scenarios where this will refer to a particular context:
 
 - “this” points to global context:When a function is called standalone the function is in the global context. as all functions by default are registered under the global window object.
+
+  ![alt text](image-46.png)
   ![alt text](image-20.png)
   Here testFunc’s is declared in global context which means this will point to the global window object.Hence, since givenName is not declared on global window object it returns undefined.
+
 - “this” points to object context: When a function is declared with in an object. this would point to that object itself.
+
+  ![alt text](image-47.png)
   ![alt text](image-21.png)
   Here testFunc’s is declared in Object context which means this will point to the object obj1.when testFunc is called , for the value of this it will refer to the obj1’s context.It will get the value of name hence the name is printed.
+
+  ![alt text](image-48.png)
+  ![alt text](image-49.png)
+  ![alt text](image-50.png)
+  ![alt text](image-51.png)
+  ![alt text](image-52.png)
 
 ---
 
