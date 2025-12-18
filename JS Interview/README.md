@@ -1718,6 +1718,8 @@ Promise.all([p1, p2])
 ✔ Other promises continue executing, but their results are ignored
 ```
 
+![alt text](image-70.png)
+
 ### Real-World Use Case
 
 ✔ Load multiple APIs that must all succeed
@@ -1736,16 +1738,28 @@ await Promise.all([
 ❌ No. JavaScript promises are not cancellable by default.
 ```
 
-## 🔥 2. Promise.allSettled
+![alt text](image-72.png)
 
----
+![alt text](image-73.png)
+
+![alt text](image-74.png)
+
+![alt text](image-71.png)
+
+## 🔥 2. Promise.allSettled
 
 ### 📌 Definition
 
+`Wait for everyone to finish, no matter success or failure.`
+
 Waits until **all promises settle** (either fulfilled or rejected).
+
+![alt text](image-75.png)
 
 - ✔ Never rejects
 - ✔ Returns the **status of each promise**
+
+![alt text](image-76.png)
 
 ---
 
@@ -1773,6 +1787,8 @@ Promise.allSettled([p1, p2]).then((results) => {
 Use Promise.allSettled when partial success is acceptable.
 ```
 
+![alt text](image-77.png)
+
 ## 🔥 3. Promise.any
 
 ### 📌 Definition
@@ -1780,24 +1796,24 @@ Use Promise.allSettled when partial success is acceptable.
 Resolves as soon as any promise fulfills.
 Rejects only if all promises reject.
 
+![alt text](image-78.png)
+
 ```javascript
 Promise.any([p1, p2]);
 ```
 
-```javascript
-Promise.any([Promise.reject("A"), Promise.reject("B")]).catch((err) => {
-  console.log(err);
-});
+![alt text](image-79.png)
 
+```javascript
 // All Fail Case (IMPORTANT)
 Promise.any([Promise.reject("A"), Promise.reject("B")]).catch((err) => {
   console.log(err);
 });
 // All Fail Case O/P
 AggregateError: All promises were rejected
-
-
 ```
+
+![alt text](image-80.png)
 
 ## Interview Trap
 
@@ -1806,11 +1822,15 @@ AggregateError: All promises were rejected
 - any → waits for first success
 - race → waits for first settle
 
-## 🔥 3. Promise.race
+## 🔥 4. Promise.race
 
 ### 📌 Definition
 
 Resolves or rejects with the **first settled promise** (fulfilled or rejected).
+
+![alt text](image-81.png)
+
+![alt text](image-82.png)
 
 ---
 
@@ -1826,6 +1846,8 @@ const fast = new Promise((res) => setTimeout(() => res("fast"), 100));
 
 Promise.race([slow, fast]).then(console.log); // "fast"
 ```
+
+![alt text](image-83.png)
 
 # 28) Function Composition
 
@@ -1844,6 +1866,10 @@ const result = multiply3(add2(5)); // 21
 
 ## Composition vs Chaining
 
+`Chaining = “do this, then this, on the same object”`
+
+`Composition = “build one function by combining many functions”`
+
 ### Chaining
 
 ```javascript
@@ -1856,17 +1882,21 @@ arr.map().filter().reduce();
 const process = compose(reduceFn, filterFn, mapFn);
 ```
 
+![alt text](image-86.png)
+
+![alt text](image-85.png)
+
+![alt text](image-84.png)
+
 ✔ Composition works for any functions, not just arrays.
 | Feature | Function Composition | Method Chaining |
 |-------|----------------------|-----------------|
-| **Paradigm** | Functional Programming | Object-Oriented Programming |
+| **Approach** | Functional Programming | Object-Oriented Programming |
 | **Mechanism** | Output of one function is input to the next | Methods are called sequentially on the same object |
 | **State** | Uses immutable data and pure functions | Operates on and may modify mutable object state |
 | **Output** | Creates a new function | Operates on the initial object instance |
 
 # 29) DOM Tree (Document Object Model)
-
----
 
 ### 📌 What is the DOM?
 
