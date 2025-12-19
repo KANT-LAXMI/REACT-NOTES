@@ -2232,8 +2232,8 @@ Set-Cookie: token=abc; Secure;
 
 #### Without Secure
 
-- Cookie can be sent over **HTTP**
-- Vulnerable to **Man-in-the-Middle (MITM)** attacks
+- `Cookie can be sent over HTTP`
+- Vulnerable to `Man-in-the-Middle (MITM)` attacks
 - Susceptible to **packet sniffing**
 
 #### With Secure
@@ -2248,7 +2248,7 @@ Set-Cookie: token=abc; Secure;
 
 ### 📌 What is HttpOnly?
 
-The **HttpOnly** flag prevents **JavaScript access** to cookies.
+The **HttpOnly** flag `prevents **JavaScript access** to cookies.`
 
 ```http
 Set-Cookie: sessionId=abc; HttpOnly;
@@ -2269,13 +2269,13 @@ If an attacker injects malicious JavaScript:
 document.cookie; // ❌ blocked
 ```
 
-HttpOnly cookies cannot be accessed via JavaScript, which significantly reduces the risk of session hijacking via XSS attacks.
+`HttpOnly cookies cannot be accessed via JavaScript, which significantly reduces the risk of session hijacking via XSS attacks.`
 
 ## 3) SameSite Cookie
 
 ### 📌 What is SameSite?
 
-The **SameSite** attribute controls whether cookies are sent with **cross-site requests**.
+The **SameSite** attribute controls whether cookies are sent with `**cross-site requests**`.
 
 - Helps prevent **CSRF (Cross-Site Request Forgery)** attacks
 
@@ -2386,6 +2386,12 @@ It works by analyzing imports and exports to determine which pieces of code are 
 - ✔ Happens at **build time**, not runtime
 - ✔ Requires **ES Modules (import / export)**
 - ✔ Relies on **static analysis**
+
+  `Statically analyzable = the bundler can understand the module structure without running the code. `
+  ![alt text](image-87.png)
+
+  ![alt text](image-88.png)
+
 - ✔ Removes dead code automatically
 
 ---
@@ -2685,6 +2691,8 @@ class Eatable {
 High-level modules should **not depend on low-level modules**.  
 Both should depend on **abstractions**.
 
+![alt text](image-89.png)
+
 ---
 
 ### ❌ Bad Example
@@ -2712,6 +2720,12 @@ class PaymentService {
   }
 }
 ```
+
+![alt text](image-90.png)
+
+![alt text](image-91.png)
+
+![alt text](image-92.png)
 
 ### Why This Is Better
 
