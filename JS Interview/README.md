@@ -1,6 +1,6 @@
 # ---------------------------------------
 
-# 🔥 SECTION 1 : JavaScript Foundations
+# 🔥 JavaScript Deep-Dive
 
 # ---------------------------------------
 
@@ -777,21 +777,21 @@ Both **function scope** and **block scope** are types of local scope.
 
 # 9) `this`
 
-- In JavaScript, this refers to the object that is currently executing the function.
-- Its value is determined at runtime, based on how a function is called, not where it’s writ
-- If not declared under any object, the default context is the **global window object**.
-- To change the value of `this`, you can use **bind**, **call**, or **apply** to bind another object.
+- `In JavaScript, this refers to the object that is currently executing the function.`
+- Its value is determined at runtime, based on how a function is called, not where it’s written.
+- By default , as soon as `js code` loaded a `global window object` get created and this refer to that object.
+- To change the value of `this`, you can use **bind**, **call**, or **apply** to bind another object and this techniques is called as `explicit binding / context binding.`
 
 ### Certain scenarios where this will refer to a particular context:
 
-- “this” points to global context:When a function is called standalone the function is in the global context. as all functions by default are registered under the global window object.
+- `“this” points to global context` : When a function is called standalone the function is in the global context. as all functions by default are registered under the global window object.
 
   ![alt text](image-46.png)
 
   ![alt text](image-20.png)
   Here testFunc’s is declared in global context which means this will point to the global window object.Hence, since givenName is not declared on global window object it returns undefined.
 
-- “this” points to object context: When a function is declared with in an object. this would point to that object itself.
+- `“this” points to object context` : When a function is declared with in an object. this would point to that object itself.
 
   ![alt text](image-47.png)
 
@@ -850,7 +850,7 @@ user.greet(); // Alice
 Here, this → user
 ```
 
-## ✅ 3. Explicit Binding (call, apply, bind)
+## ✅ 3. Context Binding / Explicit Binding (call, apply, bind)
 
 ### call
 
@@ -913,27 +913,64 @@ What new does internally:
 
 `👉 this and “context binding” are related, but they are NOT the same thing.`
 
-Context binding means explicitly setting what this should be for a function.
+Context binding means explicitly setting what this should be for a function which are `call , apply , bind `
 
 There are four primary ways this is bound in JavaScript:
 
 1. **Default (Window/Global) Binding:** When a function is called as a standalone function without any other binding rules applied, this refers to the global object (e.g., window in a browser). In strict mode, this will be undefined instead.
 2. **Implicit Binding:** When a function is invoked as a method of an object (using dot notation), this implicitly binds to the object immediately to the left of the dot at the call site.
-3. **Explicit Binding:** You can explicitly force a function to use a specific object as its context using the call(), apply(), and bind() methods.
+3. **Explicit Binding:** `You can explicitly force a function to use a specific object as its context using the call(), apply(), and bind() methods.`
 4. **new Binding:** When a function is used as a constructor with the new keyword, JavaScript creates a new object and binds this to that newly created instance.
-
-![alt text](image-28.png)
-![alt text](image-29.png)
-![alt text](image-30.png)
-![alt text](image-31.png)
-![alt text](image-27.png)
 
 # 11) Lexical scope
 
-When you define a variable or function inside a block or function, they are accessible within that block or function and any nested blocks or functions within it.
-Lexical scope is closely related to closures. If a function returns another function the nested function can access the variables arguments of the lexically scoped parent functions.
-![alt text](image-22.png)
-![alt text](image-23.png)
+**Lexical scope** means that a function can use variables that are defined **outside of it**, in its **parent scope**.
+
+## 🔍 How Lexical Scope Works
+
+An **inner function** can access variables from:
+
+- ✅ Its **own scope**
+- ✅ Its **parent function’s scope**
+- ✅ The **global scope**
+
+When there is lexical scope, the innermost, inner and outermost functions may access all variables from their parent scopes all the way up to the global scope.
+
+## ![alt text](image-93.png)
+
+## 🚫 Scope Limitation
+
+- A **parent function cannot access variables** that are defined inside its **child function**.
+
+## 🧠 Why This Happens
+
+- Scope is decided by **where the code is written**,  
+  **not** by how or where the function is called.
+
+---
+
+## 🔗 Lexical Binding
+
+- A **child function is always bound to the scope of its parent**.
+- This relationship is called **lexical binding**.
+
+---
+
+## 📝 Example
+
+```js
+function outer() {
+  let a = 10;
+
+  function inner() {
+    let b = 20;
+    console.log(a); // ✅ Accessible (parent scope)
+  }
+
+  inner();
+  console.log(b); // ❌ Error: b is not defined
+}
+```
 
 ---
 
@@ -943,8 +980,8 @@ Lexical scope is closely related to closures. If a function returns another func
 
 # 13) Temporal Dead Zone (TDZ)
 
-The **Temporal Dead Zone (TDZ)** is a behavior in JavaScript that occurs when declaring variables using **let** and **const**.  
-It refers to the period between **entering the scope** and the **actual declaration** of the variable.  
+The **Temporal Dead Zone (TDZ)** is a behavior in JavaScript that occurs when declaring variables using **let** and **const**.
+It refers to the period between **entering the scope** and the **actual declaration** of the variable.
 During this period, the variable **cannot be accessed** and will throw a **ReferenceError** if used.
 
 ### Examples
@@ -962,12 +999,6 @@ console.log(myConst); // ReferenceError: Cannot access 'myConst' before initiali
 const myConst = 15;
 console.log(myConst); // 15
 ```
-
-# ---------------------------------------
-
-# 🚀 SECTION 2: VARIABLES & DATA TYPES
-
-# ---------------------------------------
 
 # 14) Primitive vs Reference Types (Deep Explanation)
 
@@ -1060,7 +1091,7 @@ But since a string (in this case, "hello") is converted to a number (which is Na
 Explicit type conversion (also known as **type casting**) is when **you**, the developer, intentionally convert a value from one type to another.  
 This is often done to ensure an operation behaves as expected.
 
-To perform explicit conversions, JavaScript provides **type constructors** such as:
+To perform explicit conversions, JavaScript provides **type constructors** such as: `NOBBS`
 
 - `String()`
 - `Number()`
@@ -1198,6 +1229,8 @@ Number("abc") → NaN
 0 / 0 → NaN
 ```
 
+![alt text](image-94.png)
+
 ## Infinity 
 
 Infinity is a special numeric value representing a number that is greater than the maximum possible number that the programming environment can handle. It is the mathematical concept of infinity.
@@ -1206,9 +1239,7 @@ Infinity is a special numeric value representing a number that is greater than t
 
 ![alt text](image-54.png)
 
-`✔ JavaScript always passes values, not references`
-
-`When passing objects → the value is a reference pointer.`
+`JavaScript is primarily a “pass by value” language, it uses a concept called “pass by reference” when dealing with objects (including arrays and functions).`
 
 ### Pass by value
 
@@ -1239,8 +1270,6 @@ In this example, we first declare a variable a and set it equal to 10. We then d
 
 ### Pass by Reference
 
-While JavaScript is primarily a “pass by value” language, it uses a concept called “pass by reference” when dealing with objects (including arrays and functions).
-
 When an object is created in JavaScript, it is stored in a memory space, and the variable associated with it stores the memory address or reference where the object is stored.
 
 If you assign this object variable to another variable, it does not copy the object. Instead, it copies the reference to the object. Both variables now point to the same memory space, which means changes through one variable are reflected when accessing the object through the other variable.
@@ -1267,22 +1296,24 @@ console.log(myObj.value); // Output: 20 (original object is modified)
 
 In this example, obj1 and obj2 are both references to the same object. When we change obj1.value to 20, the change is reflected in obj2.value because both obj1 and obj2 point to the same memory space - the object { value: 20 }.
 
-# 19) Boxing / Autoboxing
+# 19) Boxing / Autoboxing / UnBoxing
 
-In JavaScript, autoboxing is the automatic conversion of a primitive value (like a string, number, or boolean) into a temporary "wrapper" object when you try to access a property or method on it. Unboxing is the reverse process, where a wrapper object is converted back into its primitive value when a primitive is expected
+1. In JavaScript, autoboxing is the automatic conversion of a primitive value (like a string, number, or boolean) into a temporary "wrapper" object when you try to access a property or method on it.
 
-## Boxing (Auto-Boxing) in JavaScript
+2. Unboxing is the reverse process, where a wrapper object is converted back into its primitive value when a primitive is expected.
 
-In JavaScript, **primitive data types** (like string, number, boolean) are **not objects**, so technically they **should not** have methods or properties.
+## Boxing in JavaScript
 
-But they _do_.  
-For example:
+Boxing is the explicit/manual conversion of a primitive value into its object wrapper.
 
 ```javascript
-var car = "ford";
+let num = 10;
+let boxedNum = new Number(num); // explicit boxing
 
-console.log(car); // "ford"
-console.log(car.length); // 4
+console.log(typeof boxedNum); // "object"
+
+✔ You manually wrap the primitive
+✔ Uses constructors like Number, String, Boolean, BigInt, Object
 ```
 
 ## Autoboxing in JavaScript
@@ -1306,10 +1337,7 @@ Behind the scenes, when name.toUpperCase() is called, JavaScript temporarily tre
 
 ## Unboxing in JavaScript
 
-Unboxing is the process of converting an object wrapper back to its basic, primitive value. This happens automatically (implicitly) when JavaScript needs a primitive value for an operation, such as in arithmetic operations, comparisons, or type coercion
-How it works:
-
-- JavaScript engine calls the internal ToPrimitive() abstract operation, which often uses the object's valueOf() or toString() methods to retrieve the underlying primitive value.
+Unboxing is the process of converting an object wrapper back to its basic, primitive value. This happens automatically (implicitly) when JavaScript needs a primitive value for an operation, such as in arithmetic operations, comparisons, or type coercion.
 
 ```javascript
 const numObj = new Number(5); // A Number object, not a primitive
@@ -1375,7 +1403,7 @@ Everything in JS (except primitives) is an object.
 An object consists of:
 
 - Properties (key → value)
-- An internal [[Prototype]] pointer
+- An internal `[[Prototype]]` pointer
 
 ```javascript
 const obj = { a: 1 };
@@ -1419,7 +1447,10 @@ dog → animal → Object.prototype → null
 
 ## `__proto__`
 
-- `__proto__` is an **accessor property** that exposes an object’s internal `[[Prototype]]`.
+- `__proto__` is an **accessor property** (getter & setter) that exposes an object’s internal `[[Prototype]]`.
+
+  ![alt text](image-95.png)
+
 - It allows JavaScript to **look up properties and methods** that are not found directly on the object itself.
 
 - Exists on every object
@@ -1675,6 +1706,18 @@ console.log(sparseArr.flat());
 ```
 
 # 27) Promise APIs
+
+## Stages of promises
+
+![alt text](image-96.png)
+
+1. `Pending` → Initial state , Async work is running , Promise is neither resolved nor rejected
+
+2. `Resolved (Fulfilled)` → Success value received
+
+3. `Rejected` → Error / failure occurred
+
+4. `Settled` → Final state (either fulfilled or rejected)
 
 ## Summary Table
 
@@ -2036,7 +2079,7 @@ JavaScript can respond to user interactions through event listeners.
 
 ---
 
-# 30)Event Capturing & Bubbling
+# 30) Event Capturing & Bubbling
 
 ### Event Flow Phases
 
